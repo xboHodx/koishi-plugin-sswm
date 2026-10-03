@@ -1,0 +1,31 @@
+{
+  "name": "koishi-plugin-sswm",
+  "description": "把群友的图片上传到各自的 QQ 群相册",
+  "version": "0.0.1",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "test": "tsx --test test/*.spec.ts"
+  },
+  "files": [
+    "lib",
+    "dist"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "chatbot",
+    "koishi",
+    "qq",
+    "album",
+    "napcat"
+  ],
+  "koishi": {
+    "description": {
+      "zh": "引用一张图片，把它上传到群相册",
+      "en": "Upload quoted images to QQ group albums"
+    }
+  },
+  "peerDependencies": {
+    "koishi": "^4.18.11"
+  }
+}
