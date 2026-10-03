@@ -5,13 +5,23 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
-    "test": "tsx --test test/*.spec.ts"
+    "build": "tsc -p tsconfig.json && esbuild src/index.ts --bundle --outfile=lib/index.js --format=cjs --platform=node --target=es2022 --packages=external",
+    "test": "tsx --test test/*.spec.ts",
+    "prepublishOnly": "npm run build && npm test"
   },
   "files": [
     "lib",
     "dist"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xboHodx/koishi-plugin-sswm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xboHodx/koishi-plugin-sswm/issues"
+  },
+  "homepage": "https://github.com/xboHodx/koishi-plugin-sswm#readme",
   "keywords": [
     "chatbot",
     "koishi",
@@ -27,5 +37,11 @@
   },
   "peerDependencies": {
     "koishi": "^4.18.11"
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.1",
+    "koishi": "^4.18.11",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }
