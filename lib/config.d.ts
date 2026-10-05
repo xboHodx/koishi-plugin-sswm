@@ -9,5 +9,8 @@ export interface GroupBindings {
 }
 export interface Config {
     groups: GroupBindings[];
+    silentWithoutImage: boolean;
+    replyUploading: boolean;
+    replyResult: boolean;
 }
 export declare const Config: Schema<Config>;

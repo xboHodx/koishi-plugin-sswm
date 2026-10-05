@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-sswm",
   "description": "把群友的图片上传到各自的 QQ 群相册",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
