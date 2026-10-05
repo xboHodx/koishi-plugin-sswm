@@ -15,7 +15,6 @@ export interface GroupBindings {
 // 插件的用户可配置项。
 export interface Config {
   groups: GroupBindings[]
-  albumCacheTtl: number
 }
 
 export const Config: Schema<Config> = Schema.object({
@@ -26,7 +25,4 @@ export const Config: Schema<Config> = Schema.object({
       album: Schema.string().required().description('群相册名'),
     })).role('table').description('QQ 号 → 群相册名'),
   })).role('table').description('每个群一组「QQ 号 → 群相册名」映射'),
-  albumCacheTtl: Schema.natural()
-    .default(600)
-    .description('群相册列表缓存时间（秒），0 表示每次都重新获取'),
 })

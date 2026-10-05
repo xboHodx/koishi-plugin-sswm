@@ -3,7 +3,7 @@ import test from 'node:test'
 
 import type { Config } from '../src/config'
 
-import { createRuntime, findAlbumName, hasGroupConfig } from '../src/runtime'
+import { findAlbumName, hasGroupConfig } from '../src/runtime'
 import { fetchAlbums, resolveAlbum, uploadImageToAlbum } from '../src/utils/album'
 import { extractImageSources, extractSingleAtId } from '../src/utils/message'
 import { callOneBot, type OneBotRequester } from '../src/utils/onebot'
@@ -38,7 +38,6 @@ function createConfig(overrides: Partial<Config> = {}): Config {
         { userId: '2', album: '小红' },
       ],
     }],
-    albumCacheTtl: 600,
     ...overrides,
   }
 }
@@ -115,35 +114,14 @@ test('fetchAlbums 兼容两种字段名并跟随分页', async () => {
   assert.equal(calls[1].params.attach_info, 'next')
 })
 
-test('resolveAlbum 命中缓存，失效后重新拉取', async () => {
-  const runtime = createRuntime(createConfig())
-  const { onebot, calls } = createFakeOneBot(() => ok({
-    album_list: [{ album_id: 'a1', album_name: '小明' }],
-    attach_info: '',
-    has_more: false,
-  }))
-
-  const first = await resolveAlbum(onebot, '100', '小明', runtime.albums)
-  assert.equal(first.album?.id, 'a1')
-
-  const second = await resolveAlbum(onebot, '100', '小明', runtime.albums)
-  assert.equal(second.album?.id, 'a1')
-  assert.equal(calls.length, 1)
-
-  runtime.albums.invalidate('100')
-  await resolveAlbum(onebot, '100', '小明', runtime.albums)
-  assert.equal(calls.length, 2)
-})
-
 test('resolveAlbum 未命中时返回本群全部相册', async () => {
-  const runtime = createRuntime(createConfig())
   const { onebot } = createFakeOneBot(() => ok({
     album_list: [{ album_id: 'a1', album_name: '小明' }],
     attach_info: '',
     has_more: false,
   }))
 
-  const lookup = await resolveAlbum(onebot, '100', '不存在的相册', runtime.albums)
+  const lookup = await resolveAlbum(onebot, '100', '不存在的相册')
 
   assert.equal(lookup.album, undefined)
   assert.deepEqual(lookup.albums, [{ id: 'a1', name: '小明' }])

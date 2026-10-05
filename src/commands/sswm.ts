@@ -60,7 +60,7 @@ export function registerSswmCommand(ctx: Context, runtime: RuntimeContext) {
       }
 
       try {
-        const lookup = await resolveAlbum(onebot, groupId, albumName, runtime.albums)
+        const lookup = await resolveAlbum(onebot, groupId, albumName)
         const album = lookup.album
         if (!album) {
           return `群相册「${albumName}」不存在，本群可用相册：${formatAlbumNames(lookup.albums)}`
@@ -75,8 +75,6 @@ export function registerSswmCommand(ctx: Context, runtime: RuntimeContext) {
             await uploadImageToAlbum(onebot, groupId, album, image)
             success += 1
           } catch (error) {
-            // 上传失败可能是因为缓存的相册信息过期，下次重新拉取列表。
-            runtime.albums.invalidate(groupId)
             failures.push(error instanceof Error ? error.message : String(error))
           }
         }

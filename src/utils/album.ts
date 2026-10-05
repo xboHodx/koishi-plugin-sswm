@@ -9,13 +9,6 @@ export interface AlbumInfo {
   name: string
 }
 
-// 相册列表的缓存读写方式，由 runtime 提供。
-export interface AlbumCache {
-  read(groupId: string): AlbumInfo[] | undefined
-  write(groupId: string, albums: AlbumInfo[]): void
-  invalidate(groupId: string): void
-}
-
 // 查找结果：命中的相册，以及本群的全部相册（用于报错时提示可用相册）。
 export interface AlbumLookup {
   album?: AlbumInfo
@@ -71,14 +64,8 @@ export async function resolveAlbum(
   onebot: OneBotRequester,
   groupId: string,
   albumName: string,
-  cache: AlbumCache,
 ): Promise<AlbumLookup> {
-  let albums = cache.read(groupId)
-  if (!albums) {
-    albums = await fetchAlbums(onebot, groupId)
-    cache.write(groupId, albums)
-  }
-
+  const albums = await fetchAlbums(onebot, groupId)
   return { album: albums.find(item => item.name === albumName), albums }
 }
 

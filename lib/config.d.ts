@@ -9,6 +9,5 @@ export interface GroupBindings {
 }
 export interface Config {
     groups: GroupBindings[];
-    albumCacheTtl: number;
 }
 export declare const Config: Schema<Config>;
